@@ -72,11 +72,14 @@ if __name__ == "__main__":
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    print("Бот запущен! Нажмите Ctrl+C для остановки")
+    
+    # Убедитесь, что порт берется из переменных окружения
+    port = int(os.environ.get("PORT", 10000))
+    
     app.run_webhook(
-        listen="0.0.0.0",  # Слушаем все интерфейсы
-        port=int(os.environ.get("PORT", 10000)),  # Порт из переменной окружения или 10000
-        webhook_url="https://vox-tarot-bot.onrender.com",  # Замените на ваш домен
-        url_path=TOKEN,  # Уникальный путь для вебхука (можно оставить токен)
-        cert=None  # Сертификат не требуется
+        listen="0.0.0.0",
+        port=port,
+        webhook_url="https://vox-tarot-bot.onrender.com",
+        secret_token=TOKEN  # Добавьте этот параметр
     )
+    
