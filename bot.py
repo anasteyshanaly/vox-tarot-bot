@@ -73,13 +73,14 @@ if __name__ == "__main__":
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
     
-    # Убедитесь, что порт берется из переменных окружения
-    port = int(os.environ.get("PORT", 10000))
+    PORT = int(os.environ.get("PORT", 10000))
+    DOMAIN = "vox-tarot-bot.onrender.com"  # ваш домен на Render
     
     app.run_webhook(
         listen="0.0.0.0",
-        port=port,
-        webhook_url="https://vox-tarot-bot.onrender.com",
-        secret_token=TOKEN  # Добавьте этот параметр
+        port=PORT,
+        webhook_url=f"https://{DOMAIN}/{TOKEN}",
+        url_path=TOKEN,
+        cert=None
     )
     
